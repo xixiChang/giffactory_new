@@ -37,7 +37,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("/index");
     }
 
-//    @Bean
+    @Bean
     public EmbeddedServletContainerFactory servletContainerFactory(){
         TomcatEmbeddedServletContainerFactory tomcat = new TomcatEmbeddedServletContainerFactory(){
             @Override
@@ -54,7 +54,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return tomcat;
     }
 
-//    @Bean
+    @Bean
     public Connector httpConnector(){
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         connector.setScheme("http");

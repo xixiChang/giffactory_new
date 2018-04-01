@@ -38,8 +38,8 @@ public class AdminController {
 //        if (StringUtils.isEmpty(token) || !TOKEN.equals(token)){
 //            return "/error";
 //        }
-        PutObjectResult putObjectResult = ossService.getClient().putObject(OssService.gifBucketName, "1", new File("/local/sda/temp/build.prop"));
-        putObjectResult.getETag();
+//        PutObjectResult putObjectResult = ossService.getClient().putObject(OssService.gifBucketName, "1", new File("/local/sda/temp/build.prop"));
+//        putObjectResult.getETag();
 
         return "/admin";
     }
