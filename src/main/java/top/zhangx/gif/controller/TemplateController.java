@@ -1,6 +1,7 @@
 package top.zhangx.gif.controller;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import top.zhangx.gif.constants.WebStatusInfo;
 import top.zhangx.gif.entity.Result;
@@ -16,6 +18,7 @@ import top.zhangx.gif.mapper.SentenceMapper;
 import top.zhangx.gif.mapper.TemplateMapper;
 import top.zhangx.gif.service.TemplatesService;
 import top.zhangx.gif.service.OssService;
+import top.zhangx.gif.utils.SHA1;
 
 import java.io.File;
 import java.io.IOException;
@@ -74,16 +77,23 @@ public class TemplateController {
             FileUtils.writeByteArrayToFile(
                     new File(fileName),
                     file.getBytes());
-        }catch (IOException ioe){
+        }catch (MultipartException multipartException){
+            result.setStatus(WebStatusInfo.STATUS_FAIL);
+            result.setMsg("文件大小不符合5MB");
+            logger.warn("模板上传失败->"+ multipartException.getMessage());
+            return result;
+        }
+        catch (IOException ioe){
             result.setStatus(WebStatusInfo.STATUS_FAIL);
             result.setMsg(ioe.getMessage());
             return result;
         }
-        ossService.getClient().putObject(OssService.cacheBucketName, originalFilename,
+        ossService.getClient().putObject(OssService.cacheBucketName, SHA1.encode(originalFilename),
                 new File(fileName));
         final String desFilePath = writeDesFile(description, fileName);
+        logger.info("已上传模板文件－>" + SHA1.encode(originalFilename));
         if (desFilePath != null){
-            logger.debug("已写入模板描述文件－>" + desFilePath);
+            logger.debug("已写入模板<描述>文件－>" + desFilePath);
         }
 
         return result;
