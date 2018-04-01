@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace= "top.zhangx.gif.mapper.TemplateMapper">
+    <insert id="addTemplate" parameterType="top.zhangx.gif.entity.Template"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into gif_db.tb_template (
+            name,
+            display_name
+        ) values (
+            #{name},
+            #{display_name}
+        );
+
+    </insert>
+
+    <select id="getAllTemplates" resultType="top.zhangx.gif.entity.Template">
+        select
+            *
+        from
+            gif_db.tb_template;
+    </select>
+
+    <select id="getIdByName" resultType="int" parameterType="string">
+        SELECT
+          id
+        FROM
+          gif_db.tb_template
+        WHERE
+          name = #{name};
+    </select>
+
+    <select id="getDisplayNameByName" resultType="string" parameterType="string">
+        SELECT
+          display_name
+        FROM
+          gif_db.tb_template
+        WHERE
+          name = #{name};
+    </select>
+
+</mapper>

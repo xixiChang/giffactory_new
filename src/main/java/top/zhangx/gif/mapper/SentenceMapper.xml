@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace= "top.zhangx.gif.mapper.SentenceMapper">
+    <insert id="addSentences" parameterType="java.util.List">
+        insert into gif_db.tb_sentence (
+            template_id,
+            person,
+            default_value
+        ) values
+            <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+                ( #{item.template_id}, #{item.person}, #{item.default_value})
+            </foreach>>;
+
+    </insert>
+
+    <select id="getSentencesByTID" resultType="top.zhangx.gif.entity.Sentence">
+        select
+            person, default_value
+        from
+            gif_db.tb_sentence
+        WHERE
+            template_id = #{template_id};
+    </select>
+
+
+</mapper>

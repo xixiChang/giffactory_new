@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"/>
+    <script>
+        var doc = $(document);
+        $(document).ready(function test() {
+            console.debug("function");
+            var tempName = doc.getElementById("tempName").value();
+            var personList = doc.getElementsByName("peron");
+            var personKeyList = [];
+//            for (var i=0; i &lt; 11; i++){
+//                document.write(personList.item(i).value());
+//            }
+            $.ajax({
+                type:"POST",
+                url:"/putInfo/"+tempName,
+                contentType: "application/json",
+                dataType:"json",
+                data:personList,
+                success:function (data) {
+                    alert(data)
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+<form method="POST" enctype="multipart/form-data" action="/putInfo">
+
+    <p>模板名：<input id="tempName" type="text" name="tempName"/></p>
+    <p>谁说的:<input name="peron"/>  字幕1:<input name="default_value1"/></p>
+    <p>谁说的:<input name="peron"/>  字幕2:<input name="default_value2"/></p>
+    <p>谁说的:<input name="peron"/>  字幕3:<input name="default_value3"/></p>
+    <p>谁说的:<input name="peron"/>  字幕4:<input name="default_value4"/></p>
+    <p>谁说的:<input name="peron"/>  字幕5:<input name="default_value5"/></p>
+    <p>谁说的:<input name="peron"/>  字幕6:<input name="default_value6"/></p>
+    <p>谁说的:<input name="peron"/>  字幕7:<input name="default_value7"/></p>
+    <p>谁说的:<input name="peron"/>   字幕8:<input name="default_value8"/></p>
+    <p>谁说的:<input name="peron"/>  字幕9:<input name="default_value9"/></p>
+    <p>谁说的:<input name="peron"/>  字幕10:<input name="default_value10"/></p>
+    <p>谁说的:<input name="peron"/>  字幕11:<input name="default_value11"/></p>
+    <p>谁说的:<input name="peron"/>  字幕12:<input name="default_value12"/></p>
+    <p>谁说的:<input name="peron"/>  字幕13:<input name="default_value13"/></p>
+    <p>谁说的:<input name="peron"/>  字幕14:<input name="default_value14"/></p>
+
+
+    <p><input type="submit" value="上传"/></p>
+    <p><input type="button" value="test" onclick="test()"/></p>
+
+</form>
+
+<p><input type="button" value="test" onclick="test()" /></p>
+
+</body>
+</html>

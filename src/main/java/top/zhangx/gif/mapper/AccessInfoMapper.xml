@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace= "top.zhangx.gif.mapper.AccessInfoMapper">
+    <insert id="addAccessInfo" parameterType="top.zhangx.gif.entity.AccessInfo"
+            useGeneratedKeys="true" keyProperty="id">
+        insert into gif_db.tb_access (
+            time,
+            ua,
+            ip,
+            uri,
+            date
+        ) values (
+            now(),
+            #{ua},
+            #{ip},
+            #{uri},
+            CURRENT_DATE
+        );
+
+    </insert>
+
+    <select id="getAllAccessInfo" resultType="top.zhangx.gif.entity.AccessInfo">
+        select
+            *
+        from
+            gif_db.tb_access;
+    </select>
+
+    <select id="getDayAccessInfo" resultType="top.zhangx.gif.entity.AccessInfo">
+        select
+        *
+        from
+          gif_db.tb_access
+        WHERE
+          date = CURRENT_DATE ;
+    </select>
+
+</mapper>
