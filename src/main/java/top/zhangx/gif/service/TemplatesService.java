@@ -54,7 +54,7 @@ public class TemplatesService {
             if (fileList == null)
                 return;
             for (String subFile : fileList) {
-                if (Paths.get(tempPath + File.separator + subFile).toFile().isDirectory()) {
+                if (Paths.get(tempPath + subFile).toFile().isDirectory()) {
                     BufferedImage srcImage = null;
                     try {
                         srcImage = ImageIO.read(new File(imagePath + subFile + imageSuffix));

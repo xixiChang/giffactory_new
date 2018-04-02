@@ -22,7 +22,6 @@ public class OssService {
     private OSSClient client;
 
     public OssService(){
-
     }
 
 
