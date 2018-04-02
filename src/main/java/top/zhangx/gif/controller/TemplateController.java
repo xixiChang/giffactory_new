@@ -6,10 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import top.zhangx.gif.constants.WebStatusInfo;
@@ -64,8 +61,14 @@ public class TemplateController {
 
 
     @PostMapping(path = "/postTemplates")
-    public Result postTemplates(MultipartFile file, String description){
+    public Result postTemplates(@RequestBody MultipartFile file, @RequestParam(name="description") String description){
         Result result = new Result();
+
+        if (file == null){
+            result.setStatus(WebStatusInfo.STATUS_FAIL);
+            result.setMsg("上传失败,无法获取文件");
+            return result;
+        }
         String originalFilename = file.getOriginalFilename();
         if (StringUtils.isEmpty(originalFilename)){
             result.setStatus(WebStatusInfo.STATUS_FAIL);
