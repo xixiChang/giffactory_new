@@ -25,13 +25,12 @@ import java.io.IOException;
 
 @RestController
 public class TemplateController {
-    private static final String DES_FILE_SUFFIX = ".txt";
+    private static final String DES_FILE_SUFFIX = "txt";
     private static final Logger logger = LoggerFactory.getLogger(TemplateController.class);
 
     @Autowired
     private TemplateMapper templateMapper;
-//    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
-//    private TemplateMapper templateMapper = context.getBean(TemplateMapper.class);
+
 
     @Autowired
     private SentenceMapper sentenceMapper;
@@ -79,7 +78,7 @@ public class TemplateController {
                     file.getBytes());
         }catch (MultipartException multipartException){
             result.setStatus(WebStatusInfo.STATUS_FAIL);
-            result.setMsg("文件大小不符合5MB");
+            result.setMsg("文件大小不符合(5MB)");
             logger.warn("模板上传失败->"+ multipartException.getMessage());
             return result;
         }
@@ -88,7 +87,8 @@ public class TemplateController {
             result.setMsg(ioe.getMessage());
             return result;
         }
-        ossService.getClient().putObject(OssService.cacheBucketName, SHA1.encode(originalFilename),
+        ossService.getClient().putObject(OssService.cacheBucketName,
+                originalFilename,
                 new File(fileName));
         final String desFilePath = writeDesFile(description, fileName);
         logger.info("已上传模板文件－>" + SHA1.encode(originalFilename));
@@ -102,7 +102,7 @@ public class TemplateController {
     private String writeDesFile(String des, String fileName){
         if (StringUtils.isEmpty(des))
             return null;
-        int index = fileName.indexOf(".");
+        int index = fileName.lastIndexOf(".");
         fileName = fileName.substring(0, index);
         try {
             FileUtils.writeByteArrayToFile(new File(fileName + DES_FILE_SUFFIX), des.getBytes());
