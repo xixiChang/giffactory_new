@@ -45,7 +45,7 @@ public class WebRequestInterceptor extends HandlerInterceptorAdapter {
         accessInfo.setUri(uri);
         accessInfoMapper.addAccessInfo(accessInfo);
 
-        if ("gif/produce".equals(uri)
+        if ("/gif/produce".equals(uri)
                 && (StringUtils.isEmpty(clientIP)
                 || clientIP.startsWith("127.0")
                 || clientIP.startsWith("192.168"))){
@@ -59,7 +59,7 @@ public class WebRequestInterceptor extends HandlerInterceptorAdapter {
             printWriter.close();
         }
 
-        if("gif/produce".equals(uri) && ifLimit){//接口请求频繁度限制
+        if("/gif/produce".equals(uri) && ifLimit){//接口请求频繁度限制
             final long currentTime = System.currentTimeMillis();
             if (GifAppContext.ipTime.get(clientIP) == null){
                 GifAppContext.ipTime.put(clientIP, currentTime);
@@ -72,7 +72,7 @@ public class WebRequestInterceptor extends HandlerInterceptorAdapter {
             Result result = new Result();
             result.setStatus(WebStatusInfo.STATUS_FAIL);
             result.setMsg("Too much request");
-            result.setResult("try in 60 seconds");
+            result.setResult("try in " + limitTime + "seconds");
             PrintWriter printWriter = response.getWriter();
             printWriter.append(JSON.toJSONString(result));
             printWriter.flush();

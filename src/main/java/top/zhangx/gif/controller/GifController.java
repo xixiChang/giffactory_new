@@ -51,15 +51,16 @@ public class GifController {
             String gifPath = gifService.renderGif(sentences, templateName);
             if (StringUtils.isEmpty(gifPath)){
                 result.setStatus(WebStatusInfo.STATUS_FAIL);
-                result.setMsg("生成Gif失败01");
+                result.setMsg("生成Gif失败:#01");
             }
             String gifName = Paths.get(gifPath).getFileName().toString();
             ossService.getClient().putObject(OssService.gifBucketName, gifName, new File(gifPath));
             result.setResult(OssService.OSSAlias + "/" + gifName);
         } catch (Exception e) {
             result.setStatus(WebStatusInfo.STATUS_FAIL);
-            result.setMsg("生成Gif失败02");
-            logger.error("生成Gif失败02", e.getMessage());
+            result.setMsg("生成Gif失败:#02");
+            logger.error("生成Gif失败:02", e.getMessage());
+            return result;
         }
         return result;
     }

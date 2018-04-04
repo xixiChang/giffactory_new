@@ -1,5 +1,6 @@
 package top.zhangx.gif.controller;
 
+import com.aliyun.oss.ClientException;
 import org.apache.commons.io.FileUtils;
 import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.slf4j.Logger;
@@ -19,10 +20,11 @@ import top.zhangx.gif.utils.SHA1;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 @RestController
 public class TemplateController {
-    private static final String DES_FILE_SUFFIX = "txt";
+    private static final String DES_FILE_SUFFIX = ".txt";
     private static final Logger logger = LoggerFactory.getLogger(TemplateController.class);
 
     @Autowired
@@ -90,11 +92,21 @@ public class TemplateController {
             result.setMsg(ioe.getMessage());
             return result;
         }
-        ossService.getClient().putObject(OssService.cacheBucketName,
-                originalFilename,
-                new File(fileName));
+        try {
+            if (originalFilename.contains(".")){
+                originalFilename = SHA1.encode(UUID.randomUUID().toString())
+                        + originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+            ossService.getClient().putObject(OssService.cacheBucketName,
+                    originalFilename,
+                    new File(fileName));
+        }catch (ClientException e){
+            result.setStatus(WebStatusInfo.STATUS_FAIL);
+            result.setMsg("保存文件失败");
+            return result;
+        }
         final String desFilePath = writeDesFile(description, fileName);
-        logger.info("已上传模板文件－>" + SHA1.encode(originalFilename));
+        logger.info("已上传模板文件－>" + originalFilename);
         if (desFilePath != null){
             logger.debug("已写入模板<描述>文件－>" + desFilePath);
         }

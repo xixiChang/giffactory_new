@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Service;
 import top.zhangx.gif.entity.Sentence;
@@ -28,6 +29,9 @@ public class GifService {
 
     private String tempPath;
 
+    @Value("${custom.config.imageScaleSize}")
+    private int imageScaleSize;
+
     public String renderGif(List<Sentence> subtitles, String templateName) throws Exception {
         String assPath = renderAss(subtitles, templateName);
         String gifPath = Paths.get(tempPath).resolve(UUID.randomUUID() + ".gif").toString();
@@ -35,7 +39,7 @@ public class GifService {
 //        String cmd = String.format("ffmpeg -i %s -r 6 -vf ass=%s,scale=300:-1 -y %s", videoPath, assPath, gifPath);
 //        if ("simple".equals(subtitles.getMode())) {
 //            cmd = String.format("ffmpeg -i %s -r 2 -vf ass=%s,scale=250:-1 -f gif - |gifsicle --optimize=3 --delay=20 > %s ", videoPath, assPath, gifPath);
-        String  cmd = String.format("ffmpeg -i %s -r 5 -vf ass=%s,scale=180:-1 -y %s ", videoPath, assPath, gifPath);
+        String  cmd = String.format("ffmpeg -i %s -r 5 -vf ass=%s,scale=%d:-1 -y %s ", videoPath, assPath, imageScaleSize, gifPath);
 //        }
         logger.info("cmd: {}", cmd);
         try {
