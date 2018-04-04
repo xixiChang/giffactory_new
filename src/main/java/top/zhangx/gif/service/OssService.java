@@ -16,8 +16,8 @@ public class OssService {
     private String endPoint;
 
     public static String OSSAlias = "https://giffile.zhangx.top";
-    private final static String ACCESS_KEY_ID = "HUPuIA97jIUFGP5t";
-    private final static String ACCESS_KEY_SECRET = "bnWcQew3mxJt0MXm5UZIpcQ0bTtkIA";
+    private final static String ACCESS_KEY_ID = "";
+    private final static String ACCESS_KEY_SECRET = "";
 
     private OSSClient client;
 
